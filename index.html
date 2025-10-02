@@ -1,0 +1,714 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jorge Cordon – Curriculum Vitae / Resume</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #2980b9;
+      --light-color: #ecf0f1;
+      --dark-color: #2c3e50;
+      --text-color: #333;
+      --background-color: #f9f9f9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      background: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,.1);
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.2s forwards;
+    }
+    /* Force visibility when exporting */
+    .container.exporting { opacity: 1 !important; animation: none !important; transform: none !important; }
+
+    /* Header */
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%; /* forma circular */
+      object-fit: cover;
+      border: 4px solid var(--secondary-color);
+      margin-right: 24px;
+}
+
+    header { background: var(--primary-color); color: #fff; padding: 20px 24px; position: relative; }
+    .header-top { display: flex; gap: 12px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    .lang-select { display: flex; gap: 8px; align-items: center; }
+    .lang-select label { font-size: .9rem; opacity: .9; }
+    .lang-select select { padding: 6px 10px; border-radius: 8px; border: 1px solid #0000; background: var(--light-color); color: #111; }
+
+    .pdf-button {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      background: var(--secondary-color);
+      color: #fff;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: background .2s;
+      margin-left: auto;
+    }
+    .pdf-button:hover { background: var(--accent-color); }
+
+    .header-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+    .personal-info { flex: 2; }
+    h1 { font-size: 2.2rem; margin-bottom: 4px; }
+    .title { font-size: 1.2rem; color: var(--light-color); margin-bottom: 10px; }
+
+    .contact-info { flex: 1; text-align: right; }
+    .contact-info div { margin-bottom: 6px; display: flex; gap: 10px; justify-content: flex-end; align-items: center; }
+
+    .personal-details { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: .95rem; }
+    .detail-item { display: flex; align-items: center; gap: 6px; }
+
+    /* Sections */
+    section { padding: 22px 24px; border-bottom: 1px solid #eee; }
+    h2 { color: var(--secondary-color); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--secondary-color); display: flex; align-items: center; gap: 8px; }
+
+    .summary { background: var(--light-color); padding: 18px; font-size: 1.05rem; line-height: 1.8; border-radius: 8px; }
+
+    .experience-item { margin-bottom: 20px; }
+    .job-title { font-weight: 700; font-size: 1.1rem; color: var(--dark-color); }
+    .company { font-size: 1.02rem; color: var(--accent-color); margin-bottom: 4px; }
+    .dates { color: #555; opacity: .9; font-style: italic; margin-bottom: 8px; }
+    .responsibilities { margin-left: 20px; }
+    .responsibilities li { margin-bottom: 6px; }
+
+    .education-item, .certification-item { margin-bottom: 12px; }
+
+    .skills-container { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill { background: var(--light-color); padding: 8px 14px; border-radius: 18px; font-size: .92rem; }
+
+    .skill-category { margin-bottom: 14px; }
+    .skill-category h3 { margin-bottom: 8px; color: var(--dark-color); }
+
+    .languages { display: flex; gap: 20px; }
+    .language { flex: 1; }
+    .language-level { height: 10px; background: #ddd; border-radius: 5px; margin-top: 5px; position: relative; }
+    .language-level::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; background: var(--secondary-color); border-radius: 5px; }
+    .spanish::after { width: 100%; }
+    .english::after { width: 80%; }
+
+    footer { text-align: center; padding: 18px; color: #777; font-size: .9rem; }
+
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; text-align: center; gap: 10px; }
+      .profile-pic { margin-right: 0; margin-bottom: 15px; }
+      .contact-info { text-align: center; }
+      .contact-info div { justify-content: center; }
+      .languages { flex-direction: column; }
+      .personal-details { justify-content: center; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* PDF Export Style Override */
+    .pdf-export {
+      --text-color: #333;
+    }
+    .pdf-export, .pdf-export * { animation: none !important; transition: none !important; }
+    /* Avoid awkward page breaks while exporting to PDF */
+    .pdf-export h2 { page-break-after: avoid; break-after: avoid-page; }
+    .pdf-export .experience-item,
+    .pdf-export .education-item,
+    .pdf-export .certification-item,
+    .pdf-export .skill-category { page-break-inside: avoid; break-inside: avoid-page; }
+    /* Education relies on h2 avoid rule; no forced break */
+    /* Skills page break handled by explicit .page-break element */
+    /* Explicit page-break element */
+    /*.page-break { display: none; }*/
+    .pdf-export .page-break { display: block; height: 0; page-break-before: always; break-before: page; }
+
+    /* Print-specific styles */
+    @media print {
+      body { background-color: #fff; font-size: 10pt; }
+      .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
+      .header-top, .pdf-button { display: none; }
+      header { background: transparent !important; color: #000 !important; padding: 20px 0; }
+      .title { color: #333 !important; }
+      .profile-pic { border-color: #ccc !important; }
+      h2 {
+        color: #000 !important;
+        border-bottom-color: #000;
+      }
+      .summary, .skill { background: transparent !important; }
+      .skill {
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+      }
+      a { color: #000 !important; text-decoration: none; }
+      .language-level {
+        background: #eee;
+        border: 1px solid #ccc;
+      }
+      .language-level::after { background: #333 !important; }
+      footer { padding: 10px 0; }
+      /* Print fallback uses explicit .page-break element */
+      .page-break { display: block; height: 0; page-break-before: always; }
+    }
+  </style>
+  <link rel="stylesheet" href="lib/fontawesome/css/all.min.css">
+  <script src="lib/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="lang-select" aria-label="Language selector">
+          <label for="lang" data-i18n="selector.label">Idioma</label>
+          <select id="lang" aria-label="Language" title="Language">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <button id="download-pdf" class="pdf-button" data-i18n="button.pdf">Descargar PDF</button>
+      </div>
+
+      <div class="header-content">
+        <img src="foto/foto.jpg" alt="Foto de perfil" class="profile-pic" data-i18n-alt="alt.profilepic" crossorigin="anonymous">
+        <div class="personal-info">
+          <h1 id="name">Edwin A. Deras</h1>
+          <div class="title" data-i18n="title">Service Delivery Manager</div>
+          <div class="personal-details">
+            <div class="detail-item"><i class="fas fa-passport"></i><span data-i18n="nationality">Nacionalidad: Guatemalteco</span></div>
+            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span data-i18n="birthplace">Lugar de nacimiento: Guatemala Ciudad</span></div>
+          </div>
+        </div>
+        <div class="contact-info">
+          <div><i class="fas fa-phone"></i><span id="phone">+502 4431 6437</span></div>
+          <div><i class="fas fa-envelope"></i><span id="email">admin@edwinderas.com</span></div>
+          <div><i class="fab fa-linkedin"></i><a id="linkedin" href="https://www.linkedin.com/in/edwin-arana-deras/" target="_blank" rel="noopener">linkedin.com/in/edwin-arana-deras</a></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="summary">
+      <h2><i class="fas fa-user"></i><span data-i18n="section.summary">Resumen profesional</span></h2>
+      <p data-i18n="summary.text">
+  Profesional de TI con más de 20 años de experiencia en la industria, incluyendo 8 años en gestión de Service Delivery e Infraestructura en entornos globales. He construido mi carrera impulsando la satisfacción del cliente mediante una gestión efectiva de incidentes y escalaciones, garantizando decisiones acertadas basadas en un profundo entendimiento de los sistemas y procesos de TI.<br><br>
+  Mi enfoque combina prácticas ITIL con liderazgo colaborativo, fomentando la comunicación clara entre equipos multiculturales y facilitando la implementación de soluciones innovadoras que optimizan procesos y mejoran la calidad del servicio. Con experiencia en plataformas de nube como Microsoft Azure, virtualización (VMware, Hyper-V) y herramientas de gestión (ServiceNow), impulso la eficiencia operativa y la alineación de la tecnología con los objetivos estratégicos del negocio.<br><br>
+  Me motiva crear sinergias sostenibles que permitan resultados de alto impacto, al mismo tiempo que desarrollo equipos de alto rendimiento y aseguro altos estándares en la entrega de servicios tecnológicos.
+</p>
+
+    <section class="experience">
+      <h2><i class="fas fa-briefcase"></i><span data-i18n="section.experience">Experiencia laboral</span></h2>
+      <!-- Experiencia en español -->
+      <div class="experience-es">
+        <!-- Atos - Service Delivery Manager -->
+        <div class="experience-item">
+          <div class="job-title">Service Delivery Manager</div>
+          <div class="company">Atos</div>
+          <div class="dates">2017 – Actualidad</div>
+          <ul class="responsibilities">
+            <li>Soy el punto de contacto entre el cliente y los equipos internos, liderando a personal en más de 4 países y coordinando el soporte de TI para más de 7,000 empleados en 10+ países.</li>
+            <li>Superviso la integración de todos los elementos necesarios para la entrega de servicios, garantizando el cumplimiento de SLAs y la satisfacción del cliente, con un enfoque en los procesos de calidad ISO-9001:2015.</li>
+            <li>Lidero la gestión del cambio mediante la aprobación de cambios importantes y la evaluación de su impacto para asegurar implementaciones fluidas y sin interrupciones.</li>
+            <li>Fomento una cultura organizacional basada en la ética y el cumplimiento, asegurando que el equipo respete políticas internas, normas de seguridad y procedimientos operativos en todas sus actividades.</li>
+            <li>Soy un líder clave durante incidentes mayores, dirigiendo los esfuerzos de solución y facilitando el análisis de causa raíz (RCA) para implementar soluciones definitivas y prevenir la recurrencia, siguiendo las mejores prácticas de ITIL.</li>
+            <li>Administro el presupuesto anual, la facturación mensual al cliente y la revisión de costos internos para optimizar la rentabilidad del servicio.</li>
+          </ul>
+        </div>
+        <!-- Atos - Infrastructure Management Principal -->
+        <div class="experience-item">
+          <div class="job-title">Infrastructure Management Principal</div>
+          <div class="company">Atos</div>
+          <div class="dates">2013 – 2025</div>
+          <ul class="responsibilities">
+            <li>Dirigí a un equipo de 20 ingenieros de infraestructura distribuidos en dos países, gestionando todos los aspectos de la gestión del talento, incluyendo la planificación de turnos, la coordinación de vacaciones, la capacitación, y las revisiones de desempeño y salariales.</li>
+            <li>Supervisé la infraestructura crítica de servidores Windows (OS, IIS, DHCP, DFS) y los entornos de nube (VMware, Hyper-V, Nutanix, AWS) que dieron soporte a 500 oficinas en 40 países.</li>
+            <li>Fui el primer punto de contacto para escalamientos, gestionando y resolviendo de forma activa incidentes, peticiones de servicio y problemas, y coordinando los cambios del sistema para asegurar el cumplimiento de los SLAs.</li>
+            <li>Lideré una fase crítica de transferencia de conocimiento para la transición de un cliente clave, reubicándome en Inglaterra por 45 días para documentar y transferir el conocimiento operativo exitosamente, garantizando la continuidad del servicio.</li>
+            <li>Desarrollé e implementé procedimientos y mejores prácticas operativas para mejorar la eficiencia del equipo y la estabilidad del sistema dentro de la infraestructura gestionada.</li>
+          </ul>
+        </div>
+        <!-- Atos - Infrastructure Management Senior Analyst -->
+        <div class="experience-item">
+          <div class="job-title">Infrastructure Management Senior Analyst</div>
+          <div class="company">Atos</div>
+          <div class="dates">2010 – 2013</div>
+          <ul class="responsibilities">
+            <li>Mantuve el 99.8% de disponibilidad para entornos críticos de Windows y VMware a través de mantenimiento proactivo, aplicación de parches de seguridad y creación de nueva infraestructura.</li>
+            <li>Mis responsabilidades principales incluían la gestión de infraestructura, lo que garantizaba la confiabilidad de los servidores y el cumplimiento de las políticas de seguridad. Mi posición estuvo directamente relacionada con la gestión de la disponibilidad del servicio a través de la ejecución del plan de recuperación ante desastres y otras tareas relacionadas con el mantenimiento de la infraestructura.</li>
+          </ul>
+        </div>
+        <!-- Millicom International Cellular (Tigo Guatemala) - Capacity Planning Engineer -->
+        <div class="experience-item">
+          <div class="job-title">Capacity Planning Engineer</div>
+          <div class="company">Millicom International Cellular (Tigo Guatemala)</div>
+          <div class="dates">2012 – 2014</div>
+          <ul class="responsibilities">
+            <li>Analicé los requerimientos de capacidad de TI para asegurar niveles operativos óptimos, desarrollando modelos de pronóstico y gestionando presupuestos anuales (Capex/Opex) para el crecimiento de la infraestructura.</li>
+            <li>Fui responsable del diseño y la ejecución de nuevos proyectos de TI, incluyendo la selección de hardware/software y la coordinación de proveedores con equipos internos, para alinear los proyectos con los planes de capacidad estratégica.</li>
+          </ul>
+        </div>
+        <!-- Millicom International Cellular (Tigo Guatemala) - Data Infrastructure Engineer -->
+        <div class="experience-item">
+          <div class="job-title">Data Infrastructure Engineer</div>
+          <div class="company">Millicom International Cellular (Tigo Guatemala)</div>
+          <div class="dates">2011 – 2012</div>
+          <ul class="responsibilities">
+            <li>Fui responsable de la alta disponibilidad de los Data Center, lo cual incluí desde la gestión de energía, hasta el funcionamiento de todos los servidores y redes en 4 centros de datos.</li>
+            <li>Me encargué de la instalación, el mantenimiento, las actualizaciones y la mejora continua del entorno operativo.</li>
+            <li>Coordiné con proveedores la ejecución de trabajos clave en los centros de datos, asegurando la operación y el mantenimiento general de las instalaciones.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Experiencia en inglés -->
+      <div class="experience-en" style="display:none">
+        <!-- Atos - Service Delivery Manager -->
+        <div class="experience-item">
+          <div class="job-title">Service Delivery Manager</div>
+          <div class="company">Atos</div>
+          <div class="dates">2017 – Present</div>
+          <ul class="responsibilities">
+            <li>Served as the primary client liaison, leading international service delivery for IT support covering +7000 employees. This role encompassed direct management of teams in over 4 countries and coordination with support staff across 10+ countries to uphold SLAs and ensure client satisfaction.</li>
+            <li>Led robust Change Management by personally approving important/relevant changes affecting end-users and key accounts, assessing potential impact and ensuring smooth implementation.</li>
+            <li>Acted as a key escalation point and leader during Major Incidents, actively directing status updates, ensuring focused troubleshooting efforts, and driving towards timely resolution.</li>
+            <li>Ensured proactive Incident Management through daily monitoring of ticket queues, prioritizing follow-up on aging tickets and major incidents to maintain service levels.</li>
+            <li>Initiated and facilitated problem management reviews for critical incidents, guiding root cause analysis (RCA) efforts and ensuring approval of corrective actions to prevent recurrence.</li>
+            <li>Successfully managed annual budgets, monthly client invoicing, internal cost reviews to enhance profitability, and vendor contract management for resources and goods, including inter-company cost allocation.</li>
+          </ul>
+        </div>
+        <!-- Atos - Infrastructure Management Principal -->
+        <div class="experience-item">
+          <div class="job-title">Infrastructure Management Principal</div>
+          <div class="company">Atos</div>
+          <div class="dates">2013 – 2025</div>
+          <ul class="responsibilities">
+            <li>Directed a team of 20 infrastructure engineers across two countries, managing all aspects of workforce planning including shift schedules, vacation coordination, compensation time, training, performance reviews, and salary evaluations.</li>
+            <li>Led the team responsible for overseeing critical Windows Server infrastructure (OS, IIS, DHCP, DFS) and Cloud environments (VMware, Hyper-V, Nutanix, AWS) supporting 500 offices across 40 countries.</li>
+            <li>Served as the primary escalation point during shifts, actively managing and resolving Incidents, Service Requests, and Problem tickets while ensuring adherence to SLAs and coordinating system Changes.</li>
+            <li>Spearheaded a critical knowledge transfer phase for a key client transition, relocating to England for 45 days to successfully document and transfer operational knowledge, ensuring service continuity.</li>
+            <li>Developed and implemented operational procedures and best practices to enhance team efficiency and system stability within the managed infrastructure.</li>
+          </ul>
+        </div>
+        <!-- Atos - Infrastructure Management Senior Analyst -->
+        <div class="experience-item">
+          <div class="job-title">Infrastructure Management Senior Analyst</div>
+          <div class="company">Atos</div>
+          <div class="dates">2010 – 2013</div>
+          <ul class="responsibilities">
+            <li>Ensured 99.8% availability for critical Windows and VMware environments through proactive maintenance, security patching, and new infrastructure builds.</li>
+            <li>Responsible for infrastructure management, guaranteeing server reliability and compliance with security policies. Directly involved in service availability management through disaster recovery plan execution and other infrastructure maintenance tasks.</li>
+          </ul>
+        </div>
+        <!-- Millicom International Cellular (Tigo Guatemala) - Capacity Planning Engineer -->
+        <div class="experience-item">
+          <div class="job-title">Capacity Planning Engineer</div>
+          <div class="company">Millicom International Cellular (Tigo Guatemala)</div>
+          <div class="dates">2012 – 2014</div>
+          <ul class="responsibilities">
+            <li>Determined IT capacity requirements and ensured optimal operating levels by developing forecast models and managing yearly Capex/Opex budgets for infrastructure growth.</li>
+            <li>Designed and executed new IT projects, including hardware/software selection and vendor/internal team coordination, aligning with strategic capacity plans.</li>
+          </ul>
+        </div>
+        <!-- Millicom International Cellular (Tigo Guatemala) - Data Infrastructure Engineer -->
+        <div class="experience-item">
+          <div class="job-title">Data Infrastructure Engineer</div>
+          <div class="company">Millicom International Cellular (Tigo Guatemala)</div>
+          <div class="dates">2011 – 2012</div>
+          <ul class="responsibilities">
+            <li>Ensured secure and highly available operations of computing platforms, servers, and networks across 4 Data Centers.</li>
+            <li>Performed installation, maintenance, upgrades, and continuous improvement of the operating environment, coordinating with vendors for data center activities.</li>
+            <li>Coordinated key data center activities with vendors, ensuring general operation and maintenance of the facilities.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="education">
+      <h2><i class="fas fa-graduation-cap"></i><span data-i18n="section.education">Formación académica</span></h2>
+      <div class="education-item">
+        <div class="job-title">Licenciatura en Tecnología y Administración de las Telecomunicaciones (En proceso)</div>
+      </div>
+      <div class="education-item">
+        <div class="job-title">Bachillerato en Ciencias de la Computación</div>
+      </div>
+    </section>
+
+    <section class="certifications">
+  <h2><i class="fas fa-certificate"></i><span data-i18n="section.certs">Certificaciones</span></h2>
+  <div class="certification-item">ITIL Foundation IT Service Management</div>
+  <div class="certification-item">Service Delivery Management GLOBAL PROGRAMME ASSOCIATE</div>
+  <div class="certification-item">VMware Certified Associate - Data Center Virtualization certificate</div>
+  <div class="certification-item">Microsoft Azure Fundamentals</div>
+    </section>
+
+    <section class="skills">
+  <h2><i class="fas fa-tools"></i><span data-i18n="section.skills">Habilidades técnicas</span></h2>
+
+      <div class="skill-category">
+        <h3 data-i18n="skills.os">Sistemas operativos</h3>
+        <div class="skills-container">
+          <div class="skill">Windows Server</div>
+          <div class="skill">Linux</div>
+          <div class="skill">AIX</div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <h3 data-i18n="skills.virt">Virtualización</h3>
+        <div class="skills-container">
+          <div class="skill">VMware vSphere/vCenter</div>
+          <div class="skill">VMware SRM</div>
+          <div class="skill">Nutanix</div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <h3 data-i18n="skills.net">Infraestructura</h3>
+        <div class="skills-container">
+          <div class="skill">Active Directory</div>
+          <div class="skill">DNS</div>
+          <div class="skill">DHCP</div>
+          <div class="skill">Power BI</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="languages-section">
+      <h2><i class="fas fa-language"></i><span data-i18n="section.langs">Idiomas</span></h2>
+      <div class="languages">
+        <div class="language">
+          <div data-i18n="lang.es">Español</div>
+          <div class="language-level spanish"></div>
+          <div data-i1-n="lang.es.level">Nativo</div>
+        </div>
+        <div class="language">
+          <div data-i18n="lang.en">Inglés</div>
+          <div class="language-level english"></div>
+          <div data-i18n="lang.en.level">Avanzado (C1)</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p><span data-i18n="updated">Actualizado</span>: <span id="updated-date"></span></p>
+    </footer>
+  </div>
+
+  <script>
+    // Mostrar experiencia laboral según idioma
+    function toggleExperience(lang) {
+      const es = document.querySelector('.experience-es');
+      const en = document.querySelector('.experience-en');
+      if (!es || !en) return;
+      if (lang === 'en') {
+        es.style.display = 'none';
+        en.style.display = '';
+      } else {
+        es.style.display = '';
+        en.style.display = 'none';
+      }
+    }
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    const translations = {
+      es: {
+        'button.pdf': 'Descargar PDF',
+        'alt.profilepic': 'Foto de perfil',
+        'selector.label': 'Idioma',
+        title: 'Administrador de Sistemas',
+        nationality: 'Nacionalidad: Guatemalteco',
+        birthdate: 'Fecha de nacimiento: 02/sept/1976',
+        birthplace: 'Lugar de nacimiento: Zacapa, Guatemala',
+        'section.summary': 'Resumen profesional',
+        'summary.text': 'Administrador de sistemas con más de 20 años de experiencia en infraestructura. Experto en Windows Server, Active Directory, DNS y DHCP. Experiencia en VMware vSphere y vCenter, recuperación ante desastres con VMware SRM, automatización con PowerShell y soporte de hardware. Participación en proyectos con Azure AD, despliegue de VMs en Azure y fundamentos de AWS. Enfoque en resolución de incidentes, confiabilidad y entrega de proyectos.',
+        'section.experience': 'Experiencia laboral',
+        'exp1.title': 'Sales Support Engineer – Data Center Solutions',
+        'exp1.dates': 'Febrero 2025 – Julio 2025',
+        'exp1.r1': 'Soporte preventa para servidores, almacenamiento, HCI y virtualización',
+        'exp1.r2': 'Dimensionamiento técnico y elaboración de BoM',
+        'exp1.r3': 'Validación de soluciones según mejores prácticas y requerimientos',
+        'exp1.r4': 'Presentaciones técnicas y demostraciones de producto',
+        'exp2.title': 'Infrastructure Management Sr. Analyst (WSP)',
+        'exp2.dates': 'Septiembre 2013 – Enero 2025',
+        'exp2.r1': 'Administración de Windows Server, AD, DNS y DHCP',
+        'exp2.r2': 'Soporte de VMware vSphere/vCenter y pruebas de DR con SRM',
+        'exp2.r3': 'Automatización y reportería con PowerShell',
+        'exp2.r4': 'Soporte de Nutanix',
+        'exp2.r5': 'Participación en Azure AD y despliegue de VMs',
+        'exp2.r6': 'Soporte de backup con Veritas/Symantec',
+        'exp3.title': 'Senior Server & Storage Administrator',
+        'exp3.dates': 'Marzo 2009 – Septiembre 2013',
+        'exp3.r1': 'Diseño e implementación de AD, DHCP, DNS y WSUS',
+        'exp3.r2': 'Soporte de nivel avanzado en múltiples ubicaciones en Centro America',
+        'exp3.r3': 'Implementación de SCCM',
+        'exp3.r4': 'Administración SAN (EMC, NetApp)',
+        'exp3.r5': 'Instalación, configuración y despliegue de actualizaciones a la infraestructura de servidores Windows',
+        'exp3.r6': 'Instalación y despliegue de nuevas infraestructura',
+        'exp3.r7': 'Implementación de proxy BlueCoat para todos los clientes',
+        'exp4.title': 'Server Administrator',
+        'exp4.dates': 'Marzo 2007 – Marzo 2009',
+        'exp4.r1': 'Administración de 300 servidores Microsoft',
+        'exp4.r2': 'Gestión de Active Directory y Exchange',
+        'exp4.r3': 'Monitoreo con MOM 2005',
+        'exp4.r4': 'Despliegue y configuración de antivirus McAfee EPO',
+        'exp5.title': 'Support Engineer',
+        'exp5.dates': 'Mayo 2006 – Marzo 2007',
+        'exp5.r1': 'Soporte nivel 2 para servidores, sistemas operativos y Exchange',
+        'exp5.r2': 'Implementación y soporte de antivirus corporativos',
+        'section.education': 'Formación académica',
+        'edu1.title': 'Administración de Empresas con Orientación en Computación',
+        'edu1.dates': '2000',
+        'edu2.title': 'Bachiller Industrial y Perito en Computación',
+        'edu3.title': 'Diversificado',
+        'section.certs': 'Certificaciones',
+        cert1: 'VMware VCA5 – Data Center Virtualization',
+        cert2: 'AWS Technical Professional',
+        cert3: 'AWS Business Professional',
+        cert4: 'AWS TCO & Cloud Economics',
+        cert5: 'IBM Mainframe Systems Operator Nivel I y II',
+        cert6: 'MS 70-290 Windows Server 2003',
+        cert7: 'MS 70-270 Windows XP Professional',
+        'section.skills': 'Habilidades técnicas',
+        'skills.os': 'Sistemas operativos',
+        'skills.virt': 'Virtualización',
+        'skills.net': 'Infraestructura',
+        'section.langs': 'Idiomas',
+        'lang.es': 'Español',
+        'lang.es.level': 'Nativo',
+        'lang.en': 'Inglés',
+        'lang.en.level': 'Avanzado (B2/C1)',
+        updated: 'Actualizado'
+      },
+      en: {
+        'button.pdf': 'Download PDF',
+        'alt.profilepic': 'Profile picture',
+        'selector.label': 'Language',
+        title: 'Service Delivery Manager',
+        nationality: 'Nationality: Guatemalan',
+        birthplace: 'Place of birth: Guatemala City',
+        'section.summary': 'Professional summary',
+        'summary.text': 'IT professional with over 20 years of experience, including 8 years in Service Delivery and Infrastructure management across global environments. I have built my career on driving client satisfaction by effectively managing incidents and escalations, making informed decisions grounded in a deep understanding of IT systems and processes.<br><br>My approach combines ITIL best practices with collaborative leadership, fostering clear communication among multicultural teams and enabling innovative solutions that optimize processes and enhance service quality. Skilled in cloud platforms such as Microsoft Azure, virtualization technologies (VMware, Hyper-V), and ITSM tools like ServiceNow, I focus on aligning technology with business objectives and ensuring operational excellence.<br><br>I am motivated by creating sustainable synergies that deliver high-impact results, while developing high-performing teams and maintaining world-class standards in IT service delivery.',
+        'section.experience': 'Work experience',
+  'exp1.title': 'Service Delivery Manager',
+  'exp1.dates': '7 Years of experience',
+  'exp1.r1': 'Served as the primary client liaison, leading international service delivery for IT support covering +7000 employees. This role encompassed direct management of teams in over 4 countries and coordination with support staff across 10+ countries to uphold SLAs and ensure client satisfaction.',
+  'exp1.r2': 'I led robust Change Management by personally approving important/relevant changes affecting end-users and key accounts, assessing potential impact and ensuring smooth implementation.',
+  'exp1.r3': 'Acted as a key escalation point and leader during Major Incidents, actively directing status updates, ensuring focused troubleshooting efforts, and driving towards timely resolution.',
+  'exp1.r4': 'Ensured proactive Incident Management through daily monitoring of ticket queues, prioritizing follow-up on aging tickets and major incidents to maintain service levels.',
+  'exp1.r5': 'I initiate and facilitate problem management reviews for critical incidents, guiding root cause analysis (RCA) efforts and ensuring approval of corrective actions to prevent recurrence.',
+  'exp1.r6': 'Successfully managed annual budgets, monthly client invoicing, internal cost reviews to enhance profitability, and vendor contract management for resources and goods, including inter-company cost allocation.',
+  'exp2.title': 'Infrastructure Management Principal',
+  'exp2.dates': '4 Years of experience',
+  'exp2.r1': 'Directed a team of 20 infrastructure engineers across two countries, managing all aspects of workforce planning including shift schedules, vacation coordination, compensation time, training, performance reviews, and salary evaluations.',
+  'exp2.r2': 'Led the team responsible for overseeing critical Windows Server infrastructure (OS, IIS, DHCP, DFS) and Cloud environments (VMware, Hyper-V, Nutanix) supporting 500 offices across 40 countries.',
+  'exp2.r3': 'Served as the primary escalation point during shifts, actively managing and resolving Incidents, Service Requests, and Problem tickets while ensuring adherence to SLAs and coordinating system Changes.',
+  'exp2.r4': 'Spearheaded a critical knowledge transfer phase for a key client transition, relocating to England for 44 days to successfully document and transfer operational knowledge, ensuring service continuity.',
+  'exp2.r5': 'Developed and implemented operational procedures and best practices to enhance team efficiency and system stability within the managed infrastructure.',
+  'exp3.title': 'Infrastructure Management Senior Analyst',
+  'exp3.dates': '',
+  'exp3.r1': 'Ensured 99.8% availability for critical Windows and Vmware environments through proactive maintenance, security patching, and new infrastructure builds.',
+  'exp3.r2': 'Highlights the key achievement (99.8% availability) and core responsibilities.',
+  'exp3.r3': 'Directly relevant to the "Availability Management" aspect of one of the target roles.',
+  'exp4.title': 'Capacity Planning Engineer',
+  'exp4.dates': '2012 – 2014',
+  'exp4.r1': 'Determined IT capacity requirements and ensured optimal operating levels by developing forecast models and managing yearly Capex/Opex budgets for infrastructure growth.',
+  'exp4.r2': 'Designed and executed new IT projects, including hardware/software selection and vendor/internal team coordination, aligning with strategic capacity plans.',
+  'exp5.title': 'Data Infrastructure Engineer',
+  'exp5.dates': '2011 – 2012',
+  'exp5.r1': 'Ensured secure and highly available operations of computing platforms, servers, and networks across 4 Data Centers.',
+  'exp5.r2': 'Performed installation, maintenance, upgrades, and continuous improvement of the operating environment, coordinating with vendors for data center activities.',
+        'section.education': 'Education',
+        'edu1.title': 'Business Administration with Computer Orientation',
+        'edu1.dates': '2000',
+        'edu2.title': 'Industrial Baccalaureate and Computer Expert',
+        'edu3.title': 'High school diploma',
+        'section.certs': 'Certifications',
+        cert1: 'VMware VCA5 – Data Center Virtualization',
+        cert2: 'AWS Technical Professional',
+        cert3: 'AWS Business Professional',
+        cert4: 'AWS TCO & Cloud Economics',
+        cert5: 'IBM Mainframe Systems Operator Level I & II',
+        cert6: 'MS 70-290 Windows Server 2003',
+        cert7: 'MS 70-270 Windows XP Professional',
+        'section.skills': 'Technical skills',
+        'skills.os': 'Operating systems',
+        'skills.virt': 'Virtualización',
+        'skills.net': 'Infrastructure',
+        'section.langs': 'Languages',
+        'lang.es': 'Spanish',
+        'lang.es.level': 'Native',
+        'lang.en': 'English',
+        'lang.en.level': 'Advanced (B2/C1)',
+        updated: 'Updated'
+      }
+    };
+ 
+    function setLang(lang) {
+      const dict = translations[lang] || translations.es;
+      // Forzar traducción de todos los elementos con data-i18n
+      $$('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) {
+          el.textContent = dict[key];
+          if (key === 'section.skills') {
+            console.log('Traducción aplicada a section.skills:', dict[key]);
+          }
+        } else {
+          el.textContent = '';
+          if (key === 'section.skills') {
+            console.warn('No se encontró traducción para section.skills');
+          }
+        }
+      });
+      // Mostrar experiencia laboral según idioma
+      toggleExperience(lang);
+      // También traducir atributos como 'alt'
+      $$('[data-i18n-alt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-alt');
+        if (dict[key] !== undefined) el.alt = dict[key];
+      });
+      document.documentElement.lang = lang;
+      localStorage.setItem('cv_lang', lang);
+
+      // Actualizar la fecha según el idioma
+      const now = new Date();
+      const dateLocale = lang === 'en' ? 'en-US' : 'es-GT';
+      const fmt = new Intl.DateTimeFormat(dateLocale, { year: 'numeric', month: 'long' });
+      $('#updated-date').textContent = fmt.format(now);
+    }
+
+    // Ensure html2pdf is available; attempt lazy-load if missing
+    function ensureHtml2Pdf() {
+      return new Promise((resolve, reject) => {
+        if (window.html2pdf) return resolve();
+
+        // Load only local copy
+        const existing = document.querySelector('script[data-dynamic-html2pdf]');
+        if (existing) {
+          existing.addEventListener('load', () => window.html2pdf ? resolve() : reject(new Error('html2pdf not available after load')));
+          existing.addEventListener('error', () => reject(new Error('Failed to load html2pdf')));
+          return;
+        }
+
+        const s = document.createElement('script');
+        s.src = 'lib/html2pdf.bundle.min.js';
+        s.defer = true;
+        s.setAttribute('data-dynamic-html2pdf', '');
+        s.onload = () => window.html2pdf ? resolve() : reject(new Error('html2pdf not available after load'));
+        s.onerror = () => reject(new Error('Failed to load local html2pdf'));
+        document.head.appendChild(s);
+      });
+    }
+
+    function waitForImages(root=document) {
+      const imgs = Array.from(root.querySelectorAll('img'));
+      const pending = imgs.filter(img => !img.complete || img.naturalWidth === 0);
+      if (!pending.length) return Promise.resolve();
+      return Promise.all(pending.map(img => new Promise(res => {
+        img.onload = img.onerror = () => res();
+      })));
+    }
+
+    async function generatePdf() {
+      const lang = $('#lang').value;
+      const name = $('#name').textContent.trim();
+      const date = new Date().toISOString().slice(0, 10);
+      const filename = `CV_${name.replace(/\s+/g, '_')}_${lang.toUpperCase()}_${date}.pdf`;
+
+      const element = $('.container');
+      const headerControls = $('.header-top');
+      const pdfButton = $('#download-pdf');
+      const originalButtonText = pdfButton.textContent;
+
+      // --- Pre-generation setup ---
+      pdfButton.disabled = true;
+      pdfButton.textContent = lang === 'en' ? 'Generating...' : 'Generando...';
+      
+      // Add class to force solid colors and hide controls
+      document.body.classList.add('pdf-export');
+      element.classList.add('exporting');
+      headerControls.style.display = 'none';
+
+      const opt = {
+        margin:       [0.5, 0.5, 0.5, 0.5],
+        filename:     filename,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            logging: true,
+            backgroundColor: '#ffffff'
+        },
+        pagebreak:    { mode: ['css'] },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // --- Generate PDF and then restore the view ---
+      try {
+        // Make sure the library is present
+        await ensureHtml2Pdf();
+        await waitForImages(element);
+        // small delay to let reflow settle after hiding controls
+        await new Promise(r => setTimeout(r, 50));
+        if (!window.html2pdf) throw new Error('html2pdf is not available');
+        await html2pdf().set(opt).from(element).save();
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+        const msg = lang === 'en'
+          ? 'There was an error generating the PDF. Please check your internet connection (to load the PDF library) and try again.'
+          : 'Hubo un error al generar el PDF. Verifica tu conexión a internet (para cargar la librería de PDF) y vuelve a intentarlo.';
+        alert(msg);
+        // Fallback to browser print as an alternative PDF generation
+        try { window.print(); } catch (_) {}
+      } finally {
+        // Restore view
+        document.body.classList.remove('pdf-export');
+        element.classList.remove('exporting');
+        headerControls.style.display = 'flex';
+        pdfButton.disabled = false;
+        pdfButton.textContent = originalButtonText;
+      }
+    }
+
+    function initLang() {
+      const saved = localStorage.getItem('cv_lang');
+      const select = $('#lang');
+      let lang;
+      if (saved && translations[saved]) {
+        lang = saved;
+      } else {
+        // Auto based on browser
+        const browser = (navigator.language || 'es').slice(0,2);
+        lang = translations[browser] ? browser : 'es';
+      }
+      select.value = lang;
+      // Forzar traducción al cargar
+      setTimeout(() => setLang(lang), 0);
+      select.addEventListener('change', e => setLang(e.target.value));
+      $('#download-pdf').addEventListener('click', generatePdf);
+    }
+
+    document.addEventListener('DOMContentLoaded', initLang);
+  </script>
+</body>
+</html>
+
+
